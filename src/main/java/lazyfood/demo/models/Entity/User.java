@@ -1,9 +1,8 @@
 package lazyfood.demo.models.Entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -28,6 +27,9 @@ public class User {
     @Column(name = "Address")
     private String Address;
 
+    @OneToMany(mappedBy = "Customer")
+    private List<Order> Orders;
+
     public User(String userId, String username, String password, String role, String fullname, String phoneNumber,
             String address) {
         UserId = userId;
@@ -47,6 +49,17 @@ public class User {
         Fullname = "";
         PhoneNumber = "";
         Address = "";
+    }
+
+    public User() {
+        UserId = "";
+        Username = "";
+        Password = "";
+        Role = "";
+        Fullname = "";
+        PhoneNumber = "";
+        Address = "";
+        Orders = new ArrayList<>();
     }
 
     public String getUserId() {

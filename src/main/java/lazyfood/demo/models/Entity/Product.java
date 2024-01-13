@@ -1,6 +1,7 @@
 package lazyfood.demo.models.Entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "product")
@@ -23,6 +24,9 @@ public class Product {
     @Column(name = "Image")
 
     private String Image;
+
+//    @OneToMany(mappedBy = "product")
+//    private List<ProductInOrder> ProductsInOrder;
 
     public Product() {
         this.ProductId = "";

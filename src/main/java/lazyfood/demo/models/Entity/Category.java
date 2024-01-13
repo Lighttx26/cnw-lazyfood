@@ -19,13 +19,14 @@ public class Category {
     public Category() {
         this.CategoryId = "";
         this.CategoryName = "";
+        this.Products = new ArrayList<>();
     }
 
-    public Category(String id, String name) {
-        CategoryId = id;
-        CategoryName = name;
-        Products = new ArrayList<>();
-    }
+//    public Category(String id, String name) {
+//        CategoryId = id;
+//        CategoryName = name;
+//        Products = new ArrayList<>();
+//    }
 
     public String getCategoryId() {
         return CategoryId;

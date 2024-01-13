@@ -29,8 +29,7 @@ public class Order {
 
     public Order() {
         OrderId = "";
-        CustomerId = "";
-        CustomerName = "";
+        Customer = null;
         Products = new ArrayList<ProductInOrder>();
         Time = LocalDateTime.now();
         PhoneNumber = "";
@@ -88,21 +87,13 @@ public class Order {
         OrderId = orderId;
      }
 
-    public String getCustomerId() {
-        return CustomerId;
+    public User getCustomer() {
+        return Customer;
     }
 
-    // public void setCustomerId(String customerId) {
-    // CustomerId = customerId;
-    // }
-
-    public String getCustomerName() {
-        return CustomerName;
-    }
-
-    // public void setCustomerName(String customerName) {
-    // CustomerName = customerName;
-    // }
+     public void setCustomer(User customer) {
+         Customer = customer;
+     }
 
     public List<ProductInOrder> getProducts() {
         return Products;

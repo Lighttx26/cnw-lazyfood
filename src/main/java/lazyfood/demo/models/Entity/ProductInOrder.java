@@ -17,11 +17,13 @@ public class ProductInOrder {
     @JoinColumn(name = "ProductId")
     private Product Product;
 
+    @Column(name = "Quantity")
     private int Quantity;
 
     public ProductInOrder() {
         Order = null;
         Product = null;
+        Quantity = 0;
     }
 
 //    public ProductInOrder(String productId, int quantity) {
@@ -29,6 +31,13 @@ public class ProductInOrder {
 //        Quantity = quantity;
 //    }
 
+    public Order getOrder() {
+        return Order;
+    }
+
+    public void setOrder(Order order) {
+        this.Order = order;
+    }
     public Product getProduct() {
         return Product;
     }
