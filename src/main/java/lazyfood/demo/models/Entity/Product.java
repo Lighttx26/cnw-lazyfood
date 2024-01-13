@@ -1,5 +1,7 @@
 package lazyfood.demo.models.Entity;
 
+import org.hibernate.type.BinaryType;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -22,8 +24,8 @@ public class Product {
 
     private boolean IsAvailable;
     @Column(name = "Image")
-
-    private String Image;
+    @Lob
+    private byte[] Image;
 
 //    @OneToMany(mappedBy = "product")
 //    private List<ProductInOrder> ProductsInOrder;
@@ -34,7 +36,7 @@ public class Product {
         this.Category = null;
         this.Price = 0;
         this.IsAvailable = true;
-        this.Image = "";
+        this.Image = null;
     }
 
     // From database
@@ -50,7 +52,7 @@ public class Product {
 //    }
 
     // From input
-    public Product(String productId, String productName, Category category, double price, String image) {
+    public Product(String productId, String productName, Category category, double price, byte[] image) {
         this.ProductId = productId;
         this.ProductName = productName;
         this.Category = category;
@@ -99,11 +101,11 @@ public class Product {
         IsAvailable = available;
     }
 
-    public String getImage() {
+    public byte[] getImage() {
         return Image;
     }
 
-    public void setImage(String image) {
+    public void setImage(byte[] image) {
         this.Image = image;
     }
 }
