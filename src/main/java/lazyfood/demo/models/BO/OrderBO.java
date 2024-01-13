@@ -3,7 +3,7 @@ package lazyfood.demo.models.BO;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import lazyfood.demo.models.Bean.Order;
+import lazyfood.demo.models.Entity.Order;
 import lazyfood.demo.models.DAO.OrderDAO;
 
 public class OrderBO {

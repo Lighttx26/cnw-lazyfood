@@ -1,12 +1,31 @@
-package lazyfood.demo.models.Bean;
+package lazyfood.demo.models.Entity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "user")
 public class User {
+    @Id
     private String UserId;
+    @Column(name = "Username", unique = true)
     private String Username;
+
+    @Column(name = "Password")
     private String Password;
+
+    @Column(name = "Role")
     private String Role;
+
+    @Column(name = "Fullname")
     private String Fullname;
+
+    @Column(name = "PhoneNumber")
     private String PhoneNumber;
+
+    @Column(name = "Address")
     private String Address;
 
     public User(String userId, String username, String password, String role, String fullname, String phoneNumber,

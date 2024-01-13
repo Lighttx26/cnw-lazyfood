@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 
-import lazyfood.demo.models.Bean.Product;
+import lazyfood.demo.models.Entity.Product;
 import lazyfood.demo.models.DAO.ProductDAO;
 
 public class ProductBO {

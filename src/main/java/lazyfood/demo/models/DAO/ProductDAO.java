@@ -9,7 +9,7 @@ import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
 
-import lazyfood.demo.models.Bean.Product;
+import lazyfood.demo.models.Entity.Product;
 import lazyfood.demo.utils.general;
 
 import static lazyfood.demo.utils.general.convertBlobToBase64;

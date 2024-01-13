@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import lazyfood.demo.models.Bean.Category;
+import lazyfood.demo.models.Entity.Category;
 
 public class CategoryDAO {
     public ArrayList<Category> getAllCategories() throws SQLException {

@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import lazyfood.demo.models.BO.UserBO;
-import lazyfood.demo.models.Bean.User;
+import lazyfood.demo.models.Entity.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

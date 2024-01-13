@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lazyfood.demo.models.BO.ProductBO;
-import lazyfood.demo.models.Bean.Product;
+import lazyfood.demo.models.Entity.Product;
 import lazyfood.demo.utils.general;
 
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 1, // 1 MB

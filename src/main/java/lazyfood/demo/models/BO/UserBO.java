@@ -3,7 +3,7 @@ package lazyfood.demo.models.BO;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 
-import lazyfood.demo.models.Bean.User;
+import lazyfood.demo.models.Entity.User;
 import lazyfood.demo.models.DAO.UserDAO;
 
 public class UserBO {

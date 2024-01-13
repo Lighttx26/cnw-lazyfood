@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import lazyfood.demo.models.BO.UserBO;
-import lazyfood.demo.models.Bean.User;
+import lazyfood.demo.models.Entity.User;
 import lazyfood.demo.utils.general;
 
 @WebServlet(urlPatterns = { "/register" })

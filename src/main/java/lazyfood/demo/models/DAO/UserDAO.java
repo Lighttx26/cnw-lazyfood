@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import lazyfood.demo.models.Bean.User;
+import lazyfood.demo.models.Entity.User;
 
 public class UserDAO {
 

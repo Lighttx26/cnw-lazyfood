@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="lazyfood.demo.models.Bean.Order" %>
-<%@ page import="lazyfood.demo.models.Bean.ProductInOrder" %>
+<%@ page import="lazyfood.demo.models.Entity.Order" %>
+<%@ page import="lazyfood.demo.models.Entity.ProductInOrder" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="lazyfood.demo.models.Bean.Product" %>
+<%@ page import="lazyfood.demo.models.Entity.Product" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 
 <% Order order = (Order) request.getAttribute("order");

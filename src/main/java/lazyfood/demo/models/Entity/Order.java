@@ -1,32 +1,57 @@
-package lazyfood.demo.models.Bean;
+package lazyfood.demo.models.Entity;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
+@Entity
+@Table(name = "order")
 public class Order {
+    @Id
+    @Column(name = "OrderId")
     private String OrderId;
-    private String CustomerId;
-    private String CustomerName;
-    private ArrayList<ProductInOrder> Products;
+    @ManyToOne
+    @JoinColumn(name = "CustomerId")
+    private User Customer;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<ProductInOrder> Products;
+
+    @Column(name = "Time")
     private LocalDateTime Time;
+    @Column(name = "PhoneNumber")
     private String PhoneNumber;
+    @Column(name = "Address")
     private String Address;
+    @Column(name = "IsDelivered")
     private boolean IsDelivered;
 
-    // from database to application
-    public Order(String orderId, String customerId, String customerName, ArrayList<ProductInOrder> products,
-            LocalDateTime time,
-            String phoneNumber,
-            String address, boolean isDelivered) {
-        OrderId = orderId;
-        CustomerId = customerId;
-        CustomerName = customerName;
-        Products = products;
-        Time = time;
-        PhoneNumber = phoneNumber;
-        Address = address;
-        IsDelivered = isDelivered;
+    public Order() {
+        OrderId = "";
+        CustomerId = "";
+        CustomerName = "";
+        Products = new ArrayList<ProductInOrder>();
+        Time = LocalDateTime.now();
+        PhoneNumber = "";
+        Address = "";
+        IsDelivered = false;
     }
+
+    // from database to application
+//    public Order(String orderId, String customerId, String customerName, ArrayList<ProductInOrder> products,
+//            LocalDateTime time,
+//            String phoneNumber,
+//            String address, boolean isDelivered) {
+//        OrderId = orderId;
+//        CustomerId = customerId;
+//        CustomerName = customerName;
+//        Products = products;
+//        Time = time;
+//        PhoneNumber = phoneNumber;
+//        Address = address;
+//        IsDelivered = isDelivered;
+//    }
 
     // public Order(String orderId, String customerId, String customerName,
     // ArrayList<ProductInOrder> products, Date time,
@@ -43,25 +68,25 @@ public class Order {
     // }
 
     // from application to database
-    public Order(String orderId, String customerId, ArrayList<ProductInOrder> products, LocalDateTime time,
-            String phonenumber,
-            String address) {
-        OrderId = orderId;
-        CustomerId = customerId;
-        Products = products;
-        Time = time;
-        PhoneNumber = phonenumber;
-        Address = address;
-        IsDelivered = false;
-    }
+//    public Order(String orderId, String customerId, ArrayList<ProductInOrder> products, LocalDateTime time,
+//            String phonenumber,
+//            String address) {
+//        OrderId = orderId;
+//        CustomerId = customerId;
+//        Products = products;
+//        Time = time;
+//        PhoneNumber = phonenumber;
+//        Address = address;
+//        IsDelivered = false;
+//    }
 
     public String getOrderId() {
         return OrderId;
     }
 
-    // public void setOrderId(String orderId) {
-    // OrderId = orderId;
-    // }
+     public void setOrderId(String orderId) {
+        OrderId = orderId;
+     }
 
     public String getCustomerId() {
         return CustomerId;
@@ -79,7 +104,7 @@ public class Order {
     // CustomerName = customerName;
     // }
 
-    public ArrayList<ProductInOrder> getProducts() {
+    public List<ProductInOrder> getProducts() {
         return Products;
     }
 

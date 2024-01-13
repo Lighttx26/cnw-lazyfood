@@ -8,8 +8,8 @@ import java.sql.Timestamp;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import lazyfood.demo.models.Bean.Order;
-import lazyfood.demo.models.Bean.ProductInOrder;
+import lazyfood.demo.models.Entity.Order;
+import lazyfood.demo.models.Entity.ProductInOrder;
 
 public class OrderDAO {
 

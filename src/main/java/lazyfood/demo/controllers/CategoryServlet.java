@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lazyfood.demo.models.BO.CategoryBO;
-import lazyfood.demo.models.Bean.Category;
+import lazyfood.demo.models.Entity.Category;
 
 @WebServlet(urlPatterns = {
         "/Category",

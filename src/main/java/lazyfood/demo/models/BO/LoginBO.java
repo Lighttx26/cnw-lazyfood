@@ -2,7 +2,7 @@ package lazyfood.demo.models.BO;
 
 import java.sql.SQLException;
 
-import lazyfood.demo.models.Bean.User;
+import lazyfood.demo.models.Entity.User;
 import lazyfood.demo.models.DAO.UserDAO;
 
 class AuthenticationStatus {

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page language="java" import="java.util.ArrayList"%>
-<%@ page language="java" import="lazyfood.demo.models.Bean.Order"%>
+<%@ page language="java" import="lazyfood.demo.models.Entity.Order"%>
 <!DOCTYPE html>
 <html>
 
