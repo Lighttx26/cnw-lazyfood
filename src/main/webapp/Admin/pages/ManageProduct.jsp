@@ -245,7 +245,7 @@
                                         for (int i = 0; i < products.size(); i++) { %>
                                             <tr>
                                                 <td style="width: 100px"><img
-                                                        src="data:image/jpeg;base64,<%=products.get(i).getImage()%>"
+                                                        src="data:image/jpeg;base64,<%=products.get(i).getBase64Image()%>"
                                                         width="80%" /></td>
                                                 <td>
                                                     <%= products.get(i).getProductId()%>

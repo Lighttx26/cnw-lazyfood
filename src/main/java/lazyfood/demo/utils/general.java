@@ -88,8 +88,10 @@ public class general {
             e.printStackTrace();
             return null;
         }
+    }
 
-
+    public static String BytesToBase64(byte[] bytes) {
+        return Base64.getEncoder().encodeToString(bytes);
     }
 
     public static Blob Base64toBlob(String base64) {

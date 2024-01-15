@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -124,7 +126,21 @@ public class ProductServlet extends HttpServlet {
         try {
             products = productBO.getAllProducts();
             PrintWriter out = resp.getWriter();
-            out.print(new Gson().toJson(products));
+
+            JsonArray jsonArray = new JsonArray();
+
+            // Add each element to the JSON array with additional attributes
+            for (Product product : products) {
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("Image", product.getBase64Image());
+                jsonObject.addProperty("Price", product.getPrice());
+                jsonObject.addProperty("ProductId", product.getProductId());
+                jsonObject.addProperty("ProductName", product.getProductName());
+
+                jsonArray.add(jsonObject);
+            }
+
+            out.print(new Gson().toJson(jsonArray));
             out.flush();
         } catch (IOException e) {
             try {
