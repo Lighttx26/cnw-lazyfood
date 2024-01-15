@@ -25,7 +25,6 @@ public class ProductDAO {
 
     public Product getProductById(String id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Product product = session.get(Product.class, id);
             return session.get(Product.class, id);
         }
     }

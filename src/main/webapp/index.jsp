@@ -92,49 +92,8 @@
             style="padding:8px 16px; color: white; border:2px solid white; border-radius: 8px; background: transparent;">
         </section>
       </section>
-      <section id="products"
-        style="padding: 16px; background: #111111; border-radius: 24px;  grid-template-columns: 1fr 1fr 1fr 1fr;"
-        class="parent">
-        <div style="display: flex; flex-direction: column; gap: 8px; color:white" class="grid-item">
-          <img src="./assets//background.jpg" alt="" width="100%" height="100%"
-            style="border-top-right-radius: 8px; border-top-left-radius: 8px;">
-          <span style="padding: 8px 16px 0px 16px;">$6.00</span>
-          <section style="display: flex; align-items: center; justify-content: space-between; padding: 8px 16px">
-            <span>Burger</span>
-            <span style="display: none;" id="item-id">SP01</span>
-            <section class="item-card">
-              <span class="increment"
-                style="padding: 4px 12px; border: 1px solid white; background: transparent; cursor: pointer;">+</span>
-              <span class="value" style="padding: 4px 12px; border: 1px solid white; background: transparent;">1</span>
-              <span class="decrement"
-                style="padding: 4px 12px; border: 1px solid white; background: transparent; cursor: pointer;">-</span>
-            </section>
-          </section>
-          <section style="padding: 16px;">
-            <button class="btn btnCart" style="background: #f29a51; border: none; width: 100%;"><i
-                class="fa fa-cart-shopping"></i></button>
-          </section>
-        </div>
-        <div style="display: flex; flex-direction: column; gap: 8px; color:white" class="grid-item">
-          <img src="./assets//background.jpg" alt="" width="328px" height="218px"
-            style="border-top-right-radius: 8px; border-top-left-radius: 8px;">
-          <span style="padding: 8px 16px 0px 16px;">$6.00</span>
-          <section style="display: flex; align-items: center; justify-content: space-between; padding: 8px 16px">
-            <span>Burger 1</span>
-            <span style="display: none;" id="item-id">SP01</span>
-            <section class="item-card">
-              <span class="increment"
-                style="padding: 4px 12px; border: 1px solid white; background: transparent; cursor: pointer;">+</span>
-              <span class="value" style="padding: 4px 12px; border: 1px solid white; background: transparent;">1</span>
-              <span class="decrement"
-                style="padding: 4px 12px; border: 1px solid white; background: transparent; cursor: pointer;">-</span>
-            </section>
-          </section>
-          <section style="padding: 16px;">
-            <button class="btn btnCart" style="background: #f29a51; border: none; width: 100%;"><i
-                class="fa fa-cart-shopping"></i></button>
-          </section>
-        </div>
+      <section id="products" style="padding: 16px; background: #111111; border-radius: 24px;  grid-template-columns: 1fr 1fr 1fr 1fr;" class="parent">
+
       </section>
     </section>
     <footer id="footer"

@@ -43,5 +43,5 @@
 </form>
 
 <script>
-    document.querySelector('select[name="CategoryIdE"]').value = "<%= product.getCategoryId()%>";
+    document.querySelector('select[name="CategoryIdE"]').value = "<%= product.getCategory().getCategoryId()%>";
 </script>
