@@ -27,8 +27,8 @@
 			%>
 			<tr>
 				<td><%=orders.get(i).getOrderId()%></td>
-				<td><%=orders.get(i).getCustomerId()%></td>
-				<td><%=orders.get(i).getCustomerName()%></td>
+				<td><%=orders.get(i).getCustomer().getUserId()%></td>
+				<td><%=orders.get(i).getCustomer().getFullname()%></td>
 			</tr>
 			<%
 			}

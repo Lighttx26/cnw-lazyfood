@@ -11,7 +11,7 @@ public class ProductInOrder {
 
     @ManyToOne
     @JoinColumn(name = "OrderId")
-    private Order Order;
+    private Order _Order;
 
     @ManyToOne
     @JoinColumn(name = "ProductId")
@@ -21,22 +21,17 @@ public class ProductInOrder {
     private int Quantity;
 
     public ProductInOrder() {
-        Order = null;
+        _Order = null;
         Product = null;
         Quantity = 0;
     }
 
-//    public ProductInOrder(String productId, int quantity) {
-//        ProductId = productId;
-//        Quantity = quantity;
-//    }
-
     public Order getOrder() {
-        return Order;
+        return _Order;
     }
 
     public void setOrder(Order order) {
-        this.Order = order;
+        this._Order = order;
     }
     public Product getProduct() {
         return Product;

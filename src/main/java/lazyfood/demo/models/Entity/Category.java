@@ -13,13 +13,13 @@ public class Category {
     @Column(name = "CategoryName")
     private String CategoryName;
 
-    @OneToMany(mappedBy = "category")
-    private List<Product> Products;
+//    @OneToMany(mappedBy = "Category")
+//    private List<Product> Products;
 
     public Category() {
         this.CategoryId = "";
         this.CategoryName = "";
-        this.Products = new ArrayList<>();
+//        this.Products = new ArrayList<>();
     }
 
 //    public Category(String id, String name) {
@@ -44,11 +44,11 @@ public class Category {
         CategoryName = categoryName;
     }
 
-    public List<Product> getProducts() {
-        return Products;
-    }
+//    public List<Product> getProducts() {
+//        return Products;
+//    }
 
-    public void setProducts(List<Product> products) {
-        Products = products;
-    }
+//    public void setProducts(List<Product> products) {
+//        Products = products;
+//    }
 }

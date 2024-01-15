@@ -1,9 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.util.ArrayList" %>
 <%@ page import="lazyfood.demo.models.Entity.Product" %>
 <%@ page import="com.google.gson.Gson" %>
-<%@ page import="java.util.stream.Collectors" %>
-                <style>
+<%@ page import="java.util.List" %>
+<style>
                     .shadow-xl {
                         box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
                     }
@@ -231,18 +230,16 @@
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
-
                                     <th>Image</th>
                                     <th>Product ID</th>
                                     <th>Product Name</th>
                                     <th>Category Type</th>
                                     <th>Price</th>
-
                                 </tr>
                             </thead>
                             <tbody id="productBox">
                                 <%
-                                        ArrayList<Product> products = (ArrayList<Product>) request.getAttribute("products");
+                                        List<Product> products = (List<Product>) request.getAttribute("products");
                                         Gson gson = new Gson();
                                         String jsonProducts = gson.toJson(products);
                                         for (int i = 0; i < products.size(); i++) { %>
@@ -257,7 +254,7 @@
                                                     <%= products.get(i).getProductName()%>
                                                 </td>
                                                 <td>
-                                                    <%= products.get(i).getCategoryName()%>
+                                                    <%= products.get(i).getCategory().getCategoryName()%>
                                                 </td>
                                                 <td>
                                                     $<%= String.format("%.2f", products.get(i).getPrice()) %>

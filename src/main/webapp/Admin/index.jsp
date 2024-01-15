@@ -1,6 +1,6 @@
 <%-- Created by IntelliJ IDEA. User: nguyenhung1903 Date: 12/7/2023 Time: 9:34 PM To change this template use File |
     Settings | File Templates. --%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <head>
     <meta charset="UTF-8">
@@ -33,12 +33,11 @@
                             style="list-style: none; gap: 16px; display: flex; flex-direction: column; align-items: self-start; width: 100%;">
                         <li class="list-item">
                             <a href="?page=product" id="product"
-                               style="text-decoration: none;  width: 100%; height: 100%; display: block;">Manage
-                                Product</a>
+                               style="text-decoration: none;  width: 100%; height: 100%; display: block;">Manage Product</a>
                         </li>
                         <li class="list-item">
                             <a href="?page=order" id="order"
-                               style="text-decoration: none;  width: 100%; height: 100%; display: block;">'Manage Customer's Order</a>
+                               style="text-decoration: none;  width: 100%; height: 100%; display: block;">Manage Customer's Order</a>
                         </li>
                     </ul>
                 </section>
@@ -60,8 +59,8 @@
     <%
         String role = (String)session.getAttribute("role");
         if ( role == null || !role.equals("admin")) {%>
-            alert("You are not admin, please login again");
-            window.location.href = "..";
+    alert("You are not admin, please login again");
+    window.location.href = "..";
     <%}%>
 
     $(document).ready(function () {
@@ -75,16 +74,16 @@
             var classId = q["class"];
             var pageLoad = "./Product";
             if (keyword != null && keyword !== "") {
-                pageLoad += "?keyword=" + keyword + "&class="+classId;
+                pageLoad += "?keyword=" + keyword + "&class=" + classId;
             }
 
             console.log(pageLoad);
 
             $("#content").load(pageLoad, () => {
-                $("#searchBar").on("keydown", function(e) {
-                    if(e.which == 13){
+                $("#searchBar").on("keydown", function (e) {
+                    if (e.which == 13) {
                         console.log($("#searchClass").val());
-                        window.location.href = ".?page=product&keyword=" + $(this).val() + "&class="+$("#searchClass").val();
+                        window.location.href = ".?page=product&keyword=" + $(this).val() + "&class=" + $("#searchClass").val();
                     }
                 });
             });

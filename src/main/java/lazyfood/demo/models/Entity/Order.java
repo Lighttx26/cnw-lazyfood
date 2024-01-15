@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "order")
+@Table(name = "`order`")
 public class Order {
     @Id
     @Column(name = "OrderId")
@@ -15,7 +15,7 @@ public class Order {
     @JoinColumn(name = "CustomerId")
     private User Customer;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "_Order", cascade = CascadeType.ALL)
     private List<ProductInOrder> Products;
 
     @Column(name = "Time")
@@ -28,13 +28,13 @@ public class Order {
     private boolean IsDelivered;
 
     public Order() {
-        OrderId = "";
-        Customer = null;
-        Products = new ArrayList<ProductInOrder>();
-        Time = LocalDateTime.now();
-        PhoneNumber = "";
-        Address = "";
-        IsDelivered = false;
+        this.OrderId = "";
+        this.Customer = null;
+        this.Products = new ArrayList<ProductInOrder>();
+        this.Time = LocalDateTime.now();
+        this.PhoneNumber = "";
+        this.Address = "";
+        this.IsDelivered = false;
     }
 
     // from database to application
@@ -99,7 +99,7 @@ public class Order {
         return Products;
     }
 
-    public void setProducts(ArrayList<ProductInOrder> products) {
+    public void setProducts(List<ProductInOrder> products) {
         Products = products;
     }
 

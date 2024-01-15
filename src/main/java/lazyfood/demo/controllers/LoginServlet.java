@@ -14,20 +14,18 @@ import jakarta.servlet.http.HttpSession;
 
 @WebServlet(urlPatterns = { "/login", "/logout" })
 public class LoginServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
 
     private UserBO userBO;
 
     @Override
-    public void init() throws ServletException {
+    public void init() {
         userBO = new UserBO();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
         String action = request.getServletPath();
-        System.out.println(action);
 
         if (action.equals("/logout")) {
             request.getSession().invalidate();

@@ -16,7 +16,6 @@ import lazyfood.demo.utils.general;
 
 @WebServlet(urlPatterns = { "/register" })
 public class UserServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
 
     private UserBO userBO;
 

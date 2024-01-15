@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="lazyfood.demo.models.Entity.Order" %>
 <%@ page import="lazyfood.demo.models.Entity.ProductInOrder" %>
-<%@ page import="java.util.ArrayList" %>
 <%@ page import="lazyfood.demo.models.Entity.Product" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
+<%@ page import="java.util.List" %>
 
 <% Order order = (Order) request.getAttribute("order");
 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -52,7 +52,7 @@ String isdelivered = null;
                     </tr>
                 </thead>
                 <tbody id="productBox">
-                <% ArrayList<ProductInOrder> products = order.getProducts();
+                <% List<ProductInOrder> products = order.getProducts();
                 double total = 0;
                     for (ProductInOrder product : products) {
                         Product p = product.getProduct();

@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gson.Gson;
 import jakarta.servlet.ServletException;
@@ -13,11 +13,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lazyfood.demo.models.BO.CategoryBO;
 import lazyfood.demo.models.BO.ProductBO;
 import lazyfood.demo.models.Entity.Product;
 import lazyfood.demo.utils.general;
+import org.hibernate.Hibernate;
 
-@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 1, // 1 MB
+@MultipartConfig(fileSizeThreshold = 1024 * 1024, // 1 MB
         maxFileSize = 1024 * 1024 * 10, // 10 MB
         maxRequestSize = 1024 * 1024 * 100 // 100 MB
 )
@@ -32,17 +34,17 @@ import lazyfood.demo.utils.general;
 })
 public class ProductServlet extends HttpServlet {
 
-    private static final long serialVersionUID = 1L;
-
     private ProductBO productBO;
+    private CategoryBO categoryBO;
 
     @Override
-    public void init() throws ServletException {
+    public void init() {
         productBO = new ProductBO();
+        categoryBO = new CategoryBO();
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         String action = req.getServletPath();
         String role = (String) req.getSession().getAttribute("role");
 
@@ -87,7 +89,7 @@ public class ProductServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         String action = req.getServletPath();
         switch (action) {
             case "/Admin/Product/create":
@@ -103,7 +105,7 @@ public class ProductServlet extends HttpServlet {
     }
 
     @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) {
         String action = req.getServletPath();
 
         switch (action) {
@@ -117,15 +119,14 @@ public class ProductServlet extends HttpServlet {
     }
 
     private void getAllProduct(HttpServletRequest req, HttpServletResponse resp) {
-        ArrayList<Product> products = null;
+        List<Product> products = null;
+        resp.setContentType("application/json");
         try {
             products = productBO.getAllProducts();
-            resp.setContentType("application/json");
             PrintWriter out = resp.getWriter();
             out.print(new Gson().toJson(products));
             out.flush();
-        } catch (SQLException | IOException e) {
-            resp.setContentType("application/json");
+        } catch (IOException e) {
             try {
                 PrintWriter out = resp.getWriter();
                 out.print("{\"error\": \"500\"}");
@@ -145,7 +146,7 @@ public class ProductServlet extends HttpServlet {
             PrintWriter out = resp.getWriter();
             out.print(new Gson().toJson(product));
             out.flush();
-        } catch (SQLException | IOException e) {
+        } catch (IOException e) {
             resp.setContentType("application/json");
             try {
                 PrintWriter out = resp.getWriter();
@@ -159,19 +160,19 @@ public class ProductServlet extends HttpServlet {
 
     private void ShowAllProducts(HttpServletRequest req, HttpServletResponse resp) {
 
-        ArrayList<Product> products = null;
+        List<Product> products = null;
         try {
             String keyword = req.getParameter("keyword");
             String searchClass = req.getParameter("class");
 
             if (keyword == null && searchClass == null)
                 products = productBO.getAllProducts();
-            else {
-                if (searchClass == null || searchClass.isEmpty())
-                    searchClass = "ProductName";
-                products = productBO.filterProduct(keyword, searchClass);
-            }
-        } catch (SQLException e) {
+//            else {
+//                if (searchClass == null || searchClass.isEmpty())
+//                    searchClass = "ProductName";
+//                products = productBO.filterProduct(keyword, searchClass);
+//            }
+        } catch (Exception e) {
             InternalServerErrorPage(req, resp);
             return;
         }
@@ -228,7 +229,7 @@ public class ProductServlet extends HttpServlet {
             String id = req.getParameter("ProductId");
             String name = req.getParameter("ProductName");
             String cid = req.getParameter("CategoryId");
-            Double price = Double.parseDouble(req.getParameter("Price"));
+            double price = Double.parseDouble(req.getParameter("Price"));
 
             InputStream file = null;
             try {
@@ -237,7 +238,12 @@ public class ProductServlet extends HttpServlet {
                 e.printStackTrace();
             }
 
-            Product product = new Product(id, name, cid, price, general.fileToBlob(file));
+            Product product = new Product();
+            product.setProductId(id);
+            product.setProductName(name);
+            product.setCategory(categoryBO.getCategoryById(cid));
+            product.setPrice(price);
+            product.setImage(general.InputStreamToByteArray(file));
 
             try {
                 productBO.addProduct(product);
@@ -307,7 +313,7 @@ public class ProductServlet extends HttpServlet {
             String id = req.getParameter("ProductIdE");
             String name = req.getParameter("ProductNameE");
             String cid = req.getParameter("CategoryIdE");
-            Double price = Double.parseDouble(req.getParameter("PriceE"));
+            double price = Double.parseDouble(req.getParameter("PriceE"));
 
             InputStream file = null;
             try {
@@ -325,12 +331,12 @@ public class ProductServlet extends HttpServlet {
 
             if (product != null) {
                 product.setProductName(name);
-                product.setCategoryId(cid);
+                product.setCategory(categoryBO.getCategoryById(cid));
                 product.setPrice(price);
 
                 try {
                     if (req.getPart("ImageE").getSize() > 0)
-                        product.setImage(general.fileToBlob(file));
+                        product.setImage(general.InputStreamToByteArray(file));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

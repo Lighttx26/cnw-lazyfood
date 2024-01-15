@@ -2,6 +2,7 @@ package lazyfood.demo.controllers;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -71,7 +72,7 @@ public class CategoryServlet extends HttpServlet {
     }
 
     private void ShowAllCategories(HttpServletRequest req, HttpServletResponse resp) {
-        ArrayList<Category> categories = null;
+        List<Category> categories = null;
         try {
             categories = categoryBO.getAllCaterories();
         } catch (Exception e) {
@@ -119,7 +120,9 @@ public class CategoryServlet extends HttpServlet {
             String id = req.getParameter("CategoryId");
             String name = req.getParameter("CategoryName");
 
-            Category category = new Category(id, name);
+            Category category = new Category();
+            category.setCategoryId(id);
+            category.setCategoryName(name);
             try {
                 categoryBO.addCategory(category);
             } catch (Exception e) {

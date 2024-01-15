@@ -12,17 +12,18 @@ public class Product {
     @Column(name = "ProductId")
     private String ProductId;
     @Column(name = "ProductName")
-
     private String ProductName;
+
     @ManyToOne
     @JoinColumn(name = "CategoryId")
     private Category Category;
+
     @Column(name = "Price")
-
     private double Price;
-    @Column(name = "IsAvailable")
 
+    @Column(name = "IsAvailable")
     private boolean IsAvailable;
+
     @Column(name = "Image")
     @Lob
     private byte[] Image;

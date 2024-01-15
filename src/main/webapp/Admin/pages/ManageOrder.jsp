@@ -2,6 +2,7 @@
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page import="lazyfood.demo.models.Entity.Order" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.List" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -238,7 +239,7 @@
                 </thead>
                 <tbody id="orderBox">
                         <%
-                            ArrayList<Order> orders = (ArrayList<Order>) request.getAttribute("orders");
+                            List<Order> orders = (List<Order>) request.getAttribute("orders");
                             for (int i = 0; i < orders.size(); i++) {
                                 String isdelivered = null;
                                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -251,8 +252,8 @@
                             %>
                         <tr>
                             <td style="max-width:200px; word-wrap: break-word"> <%= orders.get(i).getOrderId() %> </td>
-                            <td style="max-width:200px; word-wrap: break-word"> <%= orders.get(i).getCustomerId() %> </td>
-                            <td> <%= orders.get(i).getCustomerName() %> </td>
+                            <td style="max-width:200px; word-wrap: break-word"> <%= orders.get(i).getCustomer().getUserId() %> </td>
+                            <td> <%= orders.get(i).getCustomer().getFullname() %> </td>
                             <td> <%= orders.get(i).getAddress() %> </td>
                             <td> <%= orders.get(i).getPhoneNumber() %> </td>
                             <td> <%= formattedDateTime %> </td>

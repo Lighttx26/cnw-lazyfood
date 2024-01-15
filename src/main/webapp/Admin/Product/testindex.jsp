@@ -30,8 +30,8 @@
 			<tr>
 				<td><%=products.get(i).getProductId()%></td>
 				<td><%=products.get(i).getProductName()%></td>
-				<td><%=products.get(i).getCategoryId()%></td>
-				<td><%=products.get(i).getCategoryName()%></td>
+				<td><%=products.get(i).getCategory().getCategoryId()%></td>
+				<td><%=products.get(i).getCategory().getCategoryName()%></td>
 				<td><%=products.get(i).getPrice()%></td>
 			</tr>
 			<%

@@ -12,7 +12,7 @@ class AuthenticationStatus {
 }
 
 public class LoginBO {
-    private UserDAO userDAO;
+    private final UserDAO userDAO;
 
     public LoginBO() {
         userDAO = new UserDAO();

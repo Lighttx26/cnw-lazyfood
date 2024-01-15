@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -12,12 +13,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lazyfood.demo.models.BO.OrderBO;
+import lazyfood.demo.models.BO.ProductBO;
 import lazyfood.demo.models.BO.UserBO;
 import lazyfood.demo.models.Entity.Order;
 import lazyfood.demo.models.Entity.ProductInOrder;
@@ -35,17 +36,19 @@ import lazyfood.demo.utils.general;
 })
 public class OrderServlet extends HttpServlet {
 
-    private static final long serialVersionUID = 1L;
-
     private OrderBO orderBO;
+    private ProductBO productBO;
+    private UserBO userBO;
 
     @Override
-    public void init() throws ServletException {
+    public void init() {
         orderBO = new OrderBO();
+        productBO = new ProductBO();
+        userBO = new UserBO();
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         String action = req.getServletPath();
         String role = (String) req.getSession().getAttribute("role");
         String id = req.getParameter("OrderId");
@@ -93,7 +96,7 @@ public class OrderServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String action = req.getServletPath();
         String role = (String) req.getSession().getAttribute("role");
 
@@ -123,7 +126,7 @@ public class OrderServlet extends HttpServlet {
     }
 
     private void ShowAllOrders(HttpServletRequest req, HttpServletResponse resp) {
-        ArrayList<Order> orders = null;
+        List<Order> orders = null;
 
         try {
             orders = orderBO.getAllOrders();
@@ -142,7 +145,7 @@ public class OrderServlet extends HttpServlet {
     }
 
     private void ShowAllMyOrders(HttpServletRequest req, HttpServletResponse resp) {
-        ArrayList<Order> orders = null;
+        List<Order> orders = null;
         String role = (String) req.getSession().getAttribute("role");
 
         try {
@@ -166,7 +169,6 @@ public class OrderServlet extends HttpServlet {
     }
 
     private void ShowDetailsOrder(HttpServletRequest req, HttpServletResponse resp, String id) {
-        Order order = null;
         String role = (String) req.getSession().getAttribute("role");
 
         if (role == null) {
@@ -179,13 +181,7 @@ public class OrderServlet extends HttpServlet {
             return;
         }
 
-        try {
-            order = orderBO.getOrderById(id);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            InternalServerErrorPage(req, resp);
-            return;
-        }
+        Order order = orderBO.getOrderById(id);
 
         if (role.equals("admin")) {
             req.setAttribute("order", order);
@@ -195,12 +191,11 @@ public class OrderServlet extends HttpServlet {
                 e.printStackTrace();
                 NotFoundErrorPage(req, resp);
             }
-
         }
 
         else {
             String userid = (String) req.getSession().getAttribute("userid");
-            if (order.getCustomerId().equals(userid)) {
+            if (order.getCustomer().getUserId().equals(userid)) {
                 req.setAttribute("order", order);
                 try {
                     req.getRequestDispatcher("/Customer/Order/OrderDetails.jsp").forward(req, resp);
@@ -211,7 +206,6 @@ public class OrderServlet extends HttpServlet {
 
             else {
                 NotFoundErrorPage(req, resp);
-                return;
             }
         }
     }
@@ -228,17 +222,29 @@ public class OrderServlet extends HttpServlet {
         LocalDateTime time = LocalDateTime.now();
         String orderId = "ord" + general.generateId("ord", time.toString());
 
-        ArrayList<ProductInOrder> products = new ArrayList<ProductInOrder>();
+        List<ProductInOrder> products = new ArrayList<>();
 
         JsonArray cart = orderInfor.getAsJsonArray("cart");
         for (JsonElement item : cart) {
             JsonObject obj = item.getAsJsonObject();
             JsonPrimitive id = obj.getAsJsonPrimitive("ProductId");
             JsonPrimitive quantity = obj.getAsJsonPrimitive("Quantity");
-            products.add(new ProductInOrder(id.getAsString(), quantity.getAsInt()));
+            products.add(new ProductInOrder() {{
+                setOrder(orderBO.getOrderById(orderId));
+                setProduct(productBO.getProductById(id.getAsString()));
+                setQuantity(quantity.getAsInt());
+            }});
         }
 
-        Order order = new Order(orderId, customerId, products, time, phone, addr);
+        Order order = new Order() {{
+            setOrderId(orderId);
+            setCustomer(userBO.getUserById(customerId));
+            setProducts(products);
+            setTime(time);
+            setPhoneNumber(phone);
+            setAddress(addr);
+            setIsDelivered(false);
+        }};
 
         try {
             orderBO.createOrder(order);

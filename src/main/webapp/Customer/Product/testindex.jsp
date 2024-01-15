@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page language="java" import="java.util.ArrayList"%>
 <%@ page language="java" import="lazyfood.demo.models.Entity.Product"%>
+<%@ page import="java.util.List" %>
 <!DOCTYPE html>
 <html>
 
@@ -23,13 +23,13 @@
 		</thead>
 		<tbody>
 			<%
-			ArrayList<Product> products = (ArrayList<Product>) request.getAttribute("products");
+			List<Product> products = (List<Product>) request.getAttribute("products");
 			for (int i = 0; i < products.size(); i++) {
 			%>
 			<tr>
 				<td><%=(i+1)%></td>
 				<td><%=products.get(i).getProductName()%></td>
-				<td><%=products.get(i).getCategoryName()%></td>
+				<td><%=products.get(i).getCategory().getCategoryName()%></td>
 				<td><%=products.get(i).getPrice()%></td>
 				<td><img src="data:image/jpeg;base64,<%=products.get(i).getImage()%>"></td>
 			</tr>

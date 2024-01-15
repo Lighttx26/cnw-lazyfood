@@ -73,6 +73,25 @@ public class general {
         }
     }
 
+    public static byte[] InputStreamToByteArray(InputStream inputStream) {
+        try {
+            ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024]; // You can adjust the buffer size as needed
+
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                byteOutputStream.write(buffer, 0, bytesRead);
+            }
+
+            return byteOutputStream.toByteArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+
+    }
+
     public static Blob Base64toBlob(String base64) {
         try {
             byte[] decodedBytes = Base64.getDecoder().decode(base64);

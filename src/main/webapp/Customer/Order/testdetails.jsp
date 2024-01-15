@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page language="java" import="java.util.ArrayList"%>
 <%@ page language="java" import="lazyfood.demo.models.Entity.Order"%>
 <%@ page language="java" import="lazyfood.demo.models.Entity.ProductInOrder"%>
+<%@ page import="java.util.List" %>
 <!DOCTYPE html>
 <html>
 
@@ -31,8 +31,8 @@
 			%>
 			<tr>
 				<td><%=order.getOrderId()%></td>
-				<td><%=order.getCustomerId()%></td>
-				<td><%=order.getCustomerName()%></td>
+				<td><%=order.getCustomer().getUserId()%></td>
+				<td><%=order.getCustomer().getFullname()%></td>
                 <td><%=order.getTime()%></td>
                 <td><%=order.getAddress()%></td>
                 <td><%=order.getPhoneNumber()%></td>
@@ -50,7 +50,7 @@
 		</thead>
 		<tbody>
 			<%
-            ArrayList<ProductInOrder> products = order.getProducts();
+            List<ProductInOrder> products = order.getProducts();
 			for (int i = 0; i < products.size(); i++) {
 			%>
 			<tr>
