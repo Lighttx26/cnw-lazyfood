@@ -42,7 +42,14 @@ public class UserServlet extends HttpServlet {
         String phonenumber = request.getParameter("phone");
         String address = request.getParameter("addr");
 
-        User user = new User(userid, username, password, role, fullname, phonenumber, address);
+        User user = new User();
+        user.setUserId(userid);
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setRole(role);
+        user.setFullname(fullname);
+        user.setPhoneNumber(phonenumber);
+        user.setAddress(address);
 
         try {
             userBO.addUser(user);

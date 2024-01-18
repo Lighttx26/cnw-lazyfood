@@ -31,53 +31,11 @@ public class Order {
         this.OrderId = "";
         this.Customer = null;
         this.Products = new ArrayList<ProductInOrder>();
-        this.Time = LocalDateTime.now();
+        this.Time = null;
         this.PhoneNumber = "";
         this.Address = "";
         this.IsDelivered = false;
     }
-
-    // from database to application
-//    public Order(String orderId, String customerId, String customerName, ArrayList<ProductInOrder> products,
-//            LocalDateTime time,
-//            String phoneNumber,
-//            String address, boolean isDelivered) {
-//        OrderId = orderId;
-//        CustomerId = customerId;
-//        CustomerName = customerName;
-//        Products = products;
-//        Time = time;
-//        PhoneNumber = phoneNumber;
-//        Address = address;
-//        IsDelivered = isDelivered;
-//    }
-
-    // public Order(String orderId, String customerId, String customerName,
-    // ArrayList<ProductInOrder> products, Date time,
-    // String phoneNumber,
-    // String address) {
-    // OrderId = orderId;
-    // CustomerId = customerId;
-    // CustomerName = customerName;
-    // Products = products;
-    // Time = time;
-    // PhoneNumber = phoneNumber;
-    // Address = address;
-    // IsDelivered = false;
-    // }
-
-    // from application to database
-//    public Order(String orderId, String customerId, ArrayList<ProductInOrder> products, LocalDateTime time,
-//            String phonenumber,
-//            String address) {
-//        OrderId = orderId;
-//        CustomerId = customerId;
-//        Products = products;
-//        Time = time;
-//        PhoneNumber = phonenumber;
-//        Address = address;
-//        IsDelivered = false;
-//    }
 
     public String getOrderId() {
         return OrderId;

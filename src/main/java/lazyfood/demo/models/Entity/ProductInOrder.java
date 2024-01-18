@@ -15,14 +15,14 @@ public class ProductInOrder {
 
     @ManyToOne
     @JoinColumn(name = "ProductId")
-    private Product Product;
+    private Product _Product;
 
     @Column(name = "Quantity")
     private int Quantity;
 
     public ProductInOrder() {
         _Order = null;
-        Product = null;
+        _Product = null;
         Quantity = 0;
     }
 
@@ -34,11 +34,11 @@ public class ProductInOrder {
         this._Order = order;
     }
     public Product getProduct() {
-        return Product;
+        return _Product;
     }
 
     public void setProduct(Product product) {
-        this.Product = product;
+        this._Product = product;
     }
 
     public int getQuantity() {

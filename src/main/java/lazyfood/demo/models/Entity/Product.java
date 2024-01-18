@@ -106,10 +106,6 @@ public class Product {
         return Image;
     }
 
-    public String getBase64Image() {
-        return java.util.Base64.getEncoder().encodeToString(Image);
-    }
-
     public void setImage(byte[] image) {
         this.Image = image;
     }

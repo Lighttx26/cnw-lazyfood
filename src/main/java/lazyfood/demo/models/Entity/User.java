@@ -27,30 +27,6 @@ public class User {
     @Column(name = "Address")
     private String Address;
 
-    @OneToMany(mappedBy = "Customer")
-    private List<Order> Orders;
-
-    public User(String userId, String username, String password, String role, String fullname, String phoneNumber,
-            String address) {
-        UserId = userId;
-        Username = username;
-        Password = password;
-        Role = role;
-        Fullname = fullname;
-        PhoneNumber = phoneNumber;
-        Address = address;
-    }
-
-    public User(String userId, String username, String password, String role) {
-        UserId = userId;
-        Username = username;
-        Password = password;
-        Role = role;
-        Fullname = "";
-        PhoneNumber = "";
-        Address = "";
-    }
-
     public User() {
         UserId = "";
         Username = "";
@@ -59,24 +35,23 @@ public class User {
         Fullname = "";
         PhoneNumber = "";
         Address = "";
-        Orders = new ArrayList<>();
     }
 
     public String getUserId() {
         return UserId;
     }
 
-    // public void setUserId(String userId) {
-    // UserId = userId;
-    // }
+    public void setUserId(String userId) {
+        UserId = userId;
+    }
 
     public String getUsername() {
         return Username;
     }
 
-    // public void setUsername(String username) {
-    // Username = username;
-    // }
+    public void setUsername(String username) {
+        Username = username;
+    }
 
     public String getPassword() {
         return Password;

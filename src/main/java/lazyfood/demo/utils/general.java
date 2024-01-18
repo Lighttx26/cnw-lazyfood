@@ -73,22 +73,7 @@ public class general {
         }
     }
 
-    public static byte[] InputStreamToByteArray(InputStream inputStream) {
-        try {
-            ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
-            byte[] buffer = new byte[1024]; // You can adjust the buffer size as needed
 
-            int bytesRead;
-            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                byteOutputStream.write(buffer, 0, bytesRead);
-            }
-
-            return byteOutputStream.toByteArray();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 
     public static String BytesToBase64(byte[] bytes) {
         return Base64.getEncoder().encodeToString(bytes);
@@ -104,25 +89,5 @@ public class general {
         }
     }
 
-    public static String generateId(String namespace, String name) {
-        // Assuming namespace and name are both strings
-        UUID namespaceUUID = UUID.nameUUIDFromBytes(namespace.getBytes());
 
-        // Generate UUID v3 based on namespace and name
-        UUID userId = UUID.nameUUIDFromBytes(generateBytes(namespaceUUID, name));
-
-        // Convert UUID to string and remove hyphens
-        return userId.toString().replaceAll("-", "");
-    }
-
-    private static byte[] generateBytes(UUID namespace, String name) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            md.update(namespace.toString().getBytes());
-            md.update(name.getBytes());
-            return md.digest();
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Error generating UUID v3", e);
-        }
-    }
 }
