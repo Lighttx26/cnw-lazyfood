@@ -1,20 +1,10 @@
 package lazyfood.demo.models.DAO;
 
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Types;
-import java.util.ArrayList;
 import java.util.List;
 
 import lazyfood.demo.models.Entity.Product;
-import lazyfood.demo.utils.general;
 import org.hibernate.Session;
 
-import static lazyfood.demo.utils.general.convertBlobToBase64;
 
 public class ProductDAO {
     public List<Product> getAllProducts() {

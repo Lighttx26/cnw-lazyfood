@@ -1,10 +1,5 @@
 package lazyfood.demo.models.DAO;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import lazyfood.demo.models.Entity.User;
 import org.hibernate.Session;
 

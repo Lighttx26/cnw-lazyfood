@@ -1,7 +1,6 @@
 package lazyfood.demo.utils;
 
 import lazyfood.demo.models.DTO.ProductInOrderDTO;
-import lazyfood.demo.models.Entity.ProductInOrder;
 
 import java.util.List;
 
@@ -13,12 +12,4 @@ public class BillCalculator {
         }
         return total;
     }
-
-//    public static double calculateTotalPrice(List<ProductInOrder> products) {
-//        double total = 0;
-//        for (ProductInOrder product : products) {
-//            total += product.getProduct().getPrice() * product.getQuantity();
-//        }
-//        return total;
-//    }
 }
