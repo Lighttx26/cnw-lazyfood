@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import lazyfood.demo.models.BO.UserBO;
+import lazyfood.demo.models.DTO.UserDTO;
 import lazyfood.demo.models.Entity.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -42,20 +43,20 @@ public class LoginServlet extends HttpServlet {
         if (action.equals("/login")) {
             String username = request.getParameter("username");
             String password = request.getParameter("password");
-            User user = null;
+            UserDTO userDTO = null;
 
             try {
-                user = userBO.getUserByUsername(username);
+                userDTO = userBO.getUserByUsername(username);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
 
-            if (user != null) {
-                if (user.getPassword().equals(password)) {
+            if (userDTO != null) {
+                if (userDTO.Password.equals(password)) {
                     HttpSession session = request.getSession();
-                    session.setAttribute("userid", user.getUserId());
-                    session.setAttribute("username", user.getUsername());
-                    session.setAttribute("role", user.getRole());
+                    session.setAttribute("userid", userDTO.UserId);
+                    session.setAttribute("username", userDTO.UserName);
+                    session.setAttribute("role", userDTO.Role);
                     response.sendRedirect("index.jsp");
                 } else {
                     request.setAttribute("error", "Username or password is incorrect");

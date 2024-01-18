@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lazyfood.demo.models.BO.CategoryBO;
+import lazyfood.demo.models.DTO.CategoryDTO;
 import lazyfood.demo.models.Entity.Category;
 
 @WebServlet(urlPatterns = {
@@ -18,8 +19,6 @@ import lazyfood.demo.models.Entity.Category;
         "/Category/delete",
 })
 public class CategoryServlet extends HttpServlet {
-
-    private static final long serialVersionUID = 1L;
 
     private CategoryBO categoryBO;
 
@@ -31,7 +30,7 @@ public class CategoryServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         String action = req.getServletPath();
-        String id = req.getParameter("id");
+        String param_categoryId = req.getParameter("id");
         switch (action) {
             case "/Category":
                 ShowAllCategories(req, resp);
@@ -40,10 +39,10 @@ public class CategoryServlet extends HttpServlet {
                 ShowCreateForm(req, resp);
                 break;
             case "/Category/update":
-                ShowUpdateForm(req, resp, id);
+                ShowUpdateForm(req, resp, param_categoryId);
                 break;
             case "/Category/delete":
-                DeleteItem(req, resp, id);
+                DeleteItem(req, resp, param_categoryId);
                 break;
             default:
                 NotFoundErrorPage(req, resp);
@@ -54,16 +53,16 @@ public class CategoryServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         String action = req.getServletPath();
-        String id = req.getParameter("id");
+        String param_categoryId = req.getParameter("id");
         switch (action) {
             case "/Category/create":
                 CreateItem(req, resp);
                 break;
             case "/Category/update":
-                UpdateItem(req, resp, id);
+                UpdateItem(req, resp, param_categoryId);
                 break;
             case "/Category/delete":
-                DeleteItem(req, resp, id);
+                DeleteItem(req, resp, param_categoryId);
                 break;
             default:
                 NotFoundErrorPage(req, resp);
@@ -72,22 +71,22 @@ public class CategoryServlet extends HttpServlet {
     }
 
     private void ShowAllCategories(HttpServletRequest req, HttpServletResponse resp) {
-        List<Category> categories = null;
+        List<CategoryDTO> categoryDTOList = null;
         try {
-            categories = categoryBO.getAllCaterories();
+            categoryDTOList = categoryBO.getAllCategories();
         } catch (Exception e) {
             InternalServerErrorPage(req, resp);
             return;
         }
 
-        req.setAttribute("categories", categories);
+        req.setAttribute("categories", categoryDTOList);
         try {
-            String role = (String) req.getSession().getAttribute("role");
-            if (role == null)
+            String sess_user_role = (String) req.getSession().getAttribute("role");
+            if (sess_user_role == null)
                 req.getRequestDispatcher("/Customer/Category/index.jsp").forward(req, resp);
-            else if (role.equals("customer"))
+            else if (sess_user_role.equals("customer"))
                 req.getRequestDispatcher("/Customer/Category/index.jsp").forward(req, resp);
-            else if (role.equals("admin"))
+            else if (sess_user_role.equals("admin"))
                 req.getRequestDispatcher("/Admin/Category/index.jsp").forward(req, resp);
         } catch (Exception e) {
             NotFoundErrorPage(req, resp);
@@ -95,10 +94,10 @@ public class CategoryServlet extends HttpServlet {
     }
 
     private void ShowCreateForm(HttpServletRequest req, HttpServletResponse resp) {
-        String role = (String) req.getSession().getAttribute("role");
-        if (role == null) {
+        String sess_user_role = (String) req.getSession().getAttribute("role");
+        if (sess_user_role == null) {
             UnauthorizedErrorPage(req, resp);
-        } else if (role.equals("admin")) {
+        } else if (sess_user_role.equals("admin")) {
             try {
                 req.getRequestDispatcher("/Admin/Category/create.jsp").forward(req, resp);
             } catch (Exception e) {
@@ -110,23 +109,23 @@ public class CategoryServlet extends HttpServlet {
     }
 
     private void CreateItem(HttpServletRequest req, HttpServletResponse resp) {
-        String role = (String) req.getSession().getAttribute("role");
+        String sess_user_role = (String) req.getSession().getAttribute("role");
 
-        if (role == null) {
+        if (sess_user_role == null) {
             UnauthorizedErrorPage(req, resp);
         }
 
-        else if (role.equals("admin")) {
-            String id = req.getParameter("CategoryId");
-            String name = req.getParameter("CategoryName");
+        else if (sess_user_role.equals("admin")) {
+            String newCategory_id = req.getParameter("CategoryId");
+            String newCategory_name = req.getParameter("CategoryName");
 
-            Category category = new Category();
-            category.setCategoryId(id);
-            category.setCategoryName(name);
+            CategoryDTO categoryDTO = new CategoryDTO();
+            categoryDTO.CategoryId = newCategory_id;
+            categoryDTO.CategoryName = newCategory_name;
             try {
-                categoryBO.addCategory(category);
+                categoryBO.addCategory(categoryDTO);
             } catch (Exception e) {
-                req.setAttribute("category", category);
+                req.setAttribute("category", categoryDTO);
                 req.setAttribute("error", e.getMessage());
                 try {
                     req.getRequestDispatcher("/Admin/Category/create.jsp").forward(req, resp);
@@ -142,26 +141,26 @@ public class CategoryServlet extends HttpServlet {
     }
 
     private void ShowUpdateForm(HttpServletRequest req, HttpServletResponse resp, String id) {
-        String role = (String) req.getSession().getAttribute("role");
-        if (role == null) {
+        String sess_user_role = (String) req.getSession().getAttribute("role");
+        if (sess_user_role == null) {
             UnauthorizedErrorPage(req, resp);
         }
 
-        else if (role.equals("admin")) {
+        else if (sess_user_role.equals("admin")) {
 
-            Category category = null;
+            CategoryDTO categoryDTO = null;
             try {
-                category = categoryBO.getCategoryById(id);
+                categoryDTO = categoryBO.getCategoryById(id);
             } catch (Exception e) {
                 InternalServerErrorPage(req, resp);
             }
 
-            if (category == null) {
+            if (categoryDTO == null) {
                 NotFoundErrorPage(req, resp);
             }
 
             else {
-                req.setAttribute("category", category);
+                req.setAttribute("category", categoryDTO);
                 try {
                     req.getRequestDispatcher("/Admin/Category/update.jsp").forward(req, resp);
                 } catch (Exception e) {
@@ -176,29 +175,29 @@ public class CategoryServlet extends HttpServlet {
     }
 
     private void UpdateItem(HttpServletRequest req, HttpServletResponse resp, String id) {
-        String role = (String) req.getSession().getAttribute("role");
+        String sess_user_role = (String) req.getSession().getAttribute("role");
 
-        if (role == null) {
+        if (sess_user_role == null) {
             UnauthorizedErrorPage(req, resp);
         }
 
-        else if (role.equals("admin")) {
+        else if (sess_user_role.equals("admin")) {
             String name = req.getParameter("CategoryName");
 
-            Category category = null;
+            CategoryDTO categoryDTO = null;
             try {
-                category = categoryBO.getCategoryById(id);
+                categoryDTO = categoryBO.getCategoryById(id);
             } catch (Exception e) {
                 InternalServerErrorPage(req, resp);
             }
 
-            if (category != null) {
-                category.setCategoryName(name);
+            if (categoryDTO != null) {
+                categoryDTO.CategoryName = name;
                 try {
-                    categoryBO.updateCategory(category);
+                    categoryBO.updateCategory(categoryDTO);
                 } catch (Exception e) {
                     req.setAttribute("error", e.getMessage());
-                    req.setAttribute("category", category);
+                    req.setAttribute("category", categoryDTO);
                     try {
                         req.getRequestDispatcher("/Admin/Category/update.jsp").forward(req, resp);
                     } catch (Exception e1) {
@@ -219,12 +218,12 @@ public class CategoryServlet extends HttpServlet {
     }
 
     private void DeleteItem(HttpServletRequest req, HttpServletResponse resp, String id) {
-        String role = (String) req.getSession().getAttribute("role");
-        if (role == null) {
+        String sess_user_role = (String) req.getSession().getAttribute("role");
+        if (sess_user_role == null) {
             UnauthorizedErrorPage(req, resp);
         }
 
-        else if (role.equals("admin")) {
+        else if (sess_user_role.equals("admin")) {
             try {
                 categoryBO.deleteCategory(id);
             } catch (SQLException e) {

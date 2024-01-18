@@ -20,9 +20,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import lazyfood.demo.models.BO.OrderBO;
 import lazyfood.demo.models.BO.ProductBO;
 import lazyfood.demo.models.BO.UserBO;
+import lazyfood.demo.models.DTO.OrderDTO;
+import lazyfood.demo.models.DTO.OrderDetailsDTO;
+import lazyfood.demo.models.DTO.ProductInOrderDTO;
+import lazyfood.demo.models.DTO.UserDTO;
 import lazyfood.demo.models.Entity.Order;
 import lazyfood.demo.models.Entity.ProductInOrder;
 import lazyfood.demo.models.Entity.User;
+import lazyfood.demo.utils.IdGenerator;
 import lazyfood.demo.utils.general;
 
 @WebServlet(urlPatterns = {
@@ -37,42 +42,37 @@ import lazyfood.demo.utils.general;
 public class OrderServlet extends HttpServlet {
 
     private OrderBO orderBO;
-    private ProductBO productBO;
-    private UserBO userBO;
-
     @Override
     public void init() {
         orderBO = new OrderBO();
-        productBO = new ProductBO();
-        userBO = new UserBO();
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         String action = req.getServletPath();
-        String role = (String) req.getSession().getAttribute("role");
-        String id = req.getParameter("OrderId");
+        String sess_user_role = (String) req.getSession().getAttribute("role");
+        String param_id = req.getParameter("OrderId");
 
         switch (action) {
             case "/Order":
                 ShowAllMyOrders(req, resp);
                 break;
             case "/Admin/Order":
-                if (role == null)
+                if (sess_user_role == null)
                     UnauthorizedErrorPage(req, resp);
-                else if (!role.equals("admin"))
+                else if (!sess_user_role.equals("admin"))
                     UnauthorizedErrorPage(req, resp);
                 else
                     ShowAllOrders(req, resp);
                 break;
             case "/Order/view":
-                if (id != null)
-                    ShowDetailsOrder(req, resp, id);
+                if (param_id != null)
+                    ShowDetailsOrder(req, resp, param_id);
                 else
                     ShowAllMyOrders(req, resp);
                 break;
             case "/Order/create":
-                if (role == null) {
+                if (sess_user_role == null) {
                     UnauthorizedErrorPage(req, resp);
                 } else {
                     ShowOrderComponent(req, resp);
@@ -80,12 +80,12 @@ public class OrderServlet extends HttpServlet {
                 break;
 
             case "/Admin/Order/view":
-                if (role == null)
+                if (sess_user_role == null)
                     UnauthorizedErrorPage(req, resp);
-                else if (!role.equals("admin"))
+                else if (!sess_user_role.equals("admin"))
                     UnauthorizedErrorPage(req, resp);
-                else if (id != null)
-                    ShowDetailsOrder(req, resp, id);
+                else if (param_id != null)
+                    ShowDetailsOrder(req, resp, param_id);
                 else
                     ShowAllOrders(req, resp);
                 break;
@@ -98,22 +98,22 @@ public class OrderServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String action = req.getServletPath();
-        String role = (String) req.getSession().getAttribute("role");
+        String sess_user_role = (String) req.getSession().getAttribute("role");
 
         switch (action) {
             case "/Order/create":
-                if (role == null)
+                if (sess_user_role == null)
                     UnauthorizedErrorPage(req, resp);
-                else if (!role.equals("customer"))
+                else if (!sess_user_role.equals("customer"))
                     UnauthorizedErrorPage(req, resp);
                 else
                     CreateItem(req, resp);
                 break;
 
             case "/Admin/Order/update":
-                if (role == null)
+                if (sess_user_role == null)
                     UnauthorizedErrorPage(req, resp);
-                else if (!role.equals("admin"))
+                else if (!sess_user_role.equals("admin"))
                     UnauthorizedErrorPage(req, resp);
                 else
                     UpdateItem(req, resp);
@@ -126,16 +126,16 @@ public class OrderServlet extends HttpServlet {
     }
 
     private void ShowAllOrders(HttpServletRequest req, HttpServletResponse resp) {
-        List<Order> orders = null;
+        List<OrderDTO> orderDTOList = null;
 
         try {
-            orders = orderBO.getAllOrders();
+            orderDTOList = orderBO.getAllOrders();
         } catch (SQLException e) {
             InternalServerErrorPage(req, resp);
             return;
         }
 
-        req.setAttribute("orders", orders);
+        req.setAttribute("orders", orderDTOList);
 
         try {
             req.getRequestDispatcher("/Admin/pages/ManageOrder.jsp").forward(req, resp);
@@ -145,20 +145,20 @@ public class OrderServlet extends HttpServlet {
     }
 
     private void ShowAllMyOrders(HttpServletRequest req, HttpServletResponse resp) {
-        List<Order> orders = null;
-        String role = (String) req.getSession().getAttribute("role");
+        List<OrderDTO> orderDTOList = null;
+        String sess_user_role = (String) req.getSession().getAttribute("role");
 
         try {
-            if (role != null && (role.equals("customer") || role.equals("admin"))) {
-                String userid = (String) req.getSession().getAttribute("userid");
-                orders = orderBO.getOrdersByUser(userid);
+            if (sess_user_role != null && (sess_user_role.equals("customer") || sess_user_role.equals("admin"))) {
+                String user_id = (String) req.getSession().getAttribute("userid");
+                orderDTOList = orderBO.getOrdersByUser(user_id);
             }
         } catch (SQLException e) {
             InternalServerErrorPage(req, resp);
             return;
         }
 
-        req.setAttribute("orders", orders);
+        req.setAttribute("orders", orderDTOList);
 
         try {
             req.getRequestDispatcher("/Customer/Order/Orders.jsp").forward(req, resp);
@@ -169,22 +169,22 @@ public class OrderServlet extends HttpServlet {
     }
 
     private void ShowDetailsOrder(HttpServletRequest req, HttpServletResponse resp, String id) {
-        String role = (String) req.getSession().getAttribute("role");
+        String sess_user_role = (String) req.getSession().getAttribute("role");
 
-        if (role == null) {
+        if (sess_user_role == null) {
             NotFoundErrorPage(req, resp);
             return;
         }
 
-        else if (!(role.equals("admin") || role.equals("customer"))) {
+        else if (!(sess_user_role.equals("admin") || sess_user_role.equals("customer"))) {
             NotFoundErrorPage(req, resp);
             return;
         }
 
-        Order order = orderBO.getOrderById(id);
+        OrderDetailsDTO orderDetailsDTO = orderBO.getOrderDetails(id);
 
-        if (role.equals("admin")) {
-            req.setAttribute("order", order);
+        if (sess_user_role.equals("admin")) {
+            req.setAttribute("order", orderDetailsDTO);
             try {
                 req.getRequestDispatcher("/Admin/pages/OrderDetails.jsp").forward(req, resp);
             } catch (Exception e) {
@@ -194,9 +194,9 @@ public class OrderServlet extends HttpServlet {
         }
 
         else {
-            String userid = (String) req.getSession().getAttribute("userid");
-            if (order.getCustomer().getUserId().equals(userid)) {
-                req.setAttribute("order", order);
+            String sess_user_id = (String) req.getSession().getAttribute("userid");
+            if (orderDetailsDTO._Order.CustomerId.equals(sess_user_id)) {
+                req.setAttribute("order", orderDetailsDTO);
                 try {
                     req.getRequestDispatcher("/Customer/Order/OrderDetails.jsp").forward(req, resp);
                 } catch (Exception e) {
@@ -214,40 +214,45 @@ public class OrderServlet extends HttpServlet {
 
         BufferedReader reader = request.getReader();
         Gson gson = new Gson();
-        JsonObject orderInfor = gson.fromJson(reader, JsonObject.class);
+        JsonObject orderInformation = gson.fromJson(reader, JsonObject.class);
 
-        String customerId = request.getSession().getAttribute("userid").toString();
-        String phone = orderInfor.get("phone").getAsString();
-        String addr = orderInfor.get("addr").getAsString();
-        LocalDateTime time = LocalDateTime.now();
-        String orderId = "ord" + general.generateId("ord", time.toString());
+        // get order's basic information
+        String sess_customer_id = request.getSession().getAttribute("userid").toString();
+        String newOrder_phone = orderInformation.get("phone").getAsString();
+        String newOrder_addr = orderInformation.get("addr").getAsString();
+        LocalDateTime newOrder_time = LocalDateTime.now();
+        String newOrder_orderId = "ord" + IdGenerator.generateId("ord", newOrder_time.toString());
 
-        List<ProductInOrder> products = new ArrayList<>();
-
-        JsonArray cart = orderInfor.getAsJsonArray("cart");
+        // get products in order
+        List<ProductInOrderDTO> productsInOrder = new ArrayList<>();
+        JsonArray cart = orderInformation.getAsJsonArray("cart");
         for (JsonElement item : cart) {
             JsonObject obj = item.getAsJsonObject();
             JsonPrimitive id = obj.getAsJsonPrimitive("ProductId");
             JsonPrimitive quantity = obj.getAsJsonPrimitive("Quantity");
-            products.add(new ProductInOrder() {{
-                setOrder(orderBO.getOrderById(orderId));
-                setProduct(productBO.getProductById(id.getAsString()));
-                setQuantity(quantity.getAsInt());
+
+            productsInOrder.add(new ProductInOrderDTO() {{
+                ProductId = id.getAsString();
+                Quantity = quantity.getAsInt();
             }});
         }
 
-        Order order = new Order() {{
-            setOrderId(orderId);
-            setCustomer(userBO.getUserById(customerId));
-            setProducts(products);
-            setTime(time);
-            setPhoneNumber(phone);
-            setAddress(addr);
-            setIsDelivered(false);
+        OrderDTO orderDTO = new OrderDTO() {{
+            OrderId = newOrder_orderId;
+            CustomerId = sess_customer_id;
+            Address = newOrder_addr;
+            PhoneNumber = newOrder_phone;
+            OrderDatetime = newOrder_time;
+            IsDelivered = false;
+        }};
+
+        OrderDetailsDTO orderDetailsDTO = new OrderDetailsDTO() {{
+            _Order = orderDTO;
+            Products = productsInOrder;
         }};
 
         try {
-            orderBO.createOrder(order);
+            orderBO.createOrder(orderDetailsDTO);
         } catch (Exception e) {
             e.printStackTrace();
             InternalServerErrorPage(request, response);
@@ -258,11 +263,11 @@ public class OrderServlet extends HttpServlet {
 
     private void ShowOrderComponent(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            String userid = (String) req.getSession().getAttribute("userid");
-            User user = (new UserBO()).getUserById(userid);
+            String sess_user_id = (String) req.getSession().getAttribute("userid");
+            UserDTO userDTO = (new UserBO()).getUserById(sess_user_id);
 
-            req.setAttribute("addr", user.getAddress());
-            req.setAttribute("phone", user.getPhoneNumber());
+            req.setAttribute("addr", userDTO.Address);
+            req.setAttribute("phone", userDTO.PhoneNumber);
 
             req.getRequestDispatcher("/Customer/Order/OrderComponent.jsp").forward(req, resp);
         } catch (Exception e) {
@@ -273,10 +278,10 @@ public class OrderServlet extends HttpServlet {
 
     public void UpdateItem(HttpServletRequest request, HttpServletResponse response) {
 
-        String orderId = request.getParameter("OrderId");
+        String param_orderId = request.getParameter("OrderId");
 
         try {
-            orderBO.setOrderDelivered(orderId, true);
+            orderBO.setOrderDelivered(param_orderId, true);
         } catch (Exception e) {
             e.printStackTrace();
             InternalServerErrorPage(request, response);

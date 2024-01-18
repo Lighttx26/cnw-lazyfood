@@ -19,13 +19,15 @@ import static lazyfood.demo.utils.general.convertBlobToBase64;
 public class ProductDAO {
     public List<Product> getAllProducts() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("from Product", Product.class).list();
+            String query = "SELECT p FROM Product p LEFT JOIN FETCH p.Category";
+            return session.createQuery(query, Product.class).list();
         }
     }
 
     public Product getProductById(String id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.get(Product.class, id);
+            String query = "SELECT p FROM Product p LEFT JOIN FETCH p.Category WHERE p.ProductId = :id";
+            return session.createQuery(query, Product.class).setParameter("id", id).uniqueResult();
         }
     }
 

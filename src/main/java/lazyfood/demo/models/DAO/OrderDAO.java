@@ -1,6 +1,7 @@
 package lazyfood.demo.models.DAO;
 
 import lazyfood.demo.models.Entity.Order;
+
 import java.util.List;
 import lazyfood.demo.models.Entity.ProductInOrder;
 import org.hibernate.Session;
@@ -21,7 +22,8 @@ public class OrderDAO {
 
     public Order getOrderById(String orderId) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.get(Order.class, orderId);
+            String query = "SELECT o FROM Order o LEFT JOIN FETCH o.Products WHERE o.OrderId = :orderId";
+            return session.createQuery(query, Order.class).setParameter("orderId", orderId).uniqueResult();
         }
     }
 
@@ -44,6 +46,15 @@ public class OrderDAO {
             Order order = session.get(Order.class, orderId);
             order.setIsDelivered(state);
             session.update(order);
+            session.getTransaction().commit();
+        }
+    }
+
+    public void deleteOrder(String orderId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            Order order = session.get(Order.class, orderId);
+            session.delete(order);
             session.getTransaction().commit();
         }
     }

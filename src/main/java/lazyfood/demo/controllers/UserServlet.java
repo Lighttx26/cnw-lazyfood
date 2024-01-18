@@ -11,7 +11,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import lazyfood.demo.models.BO.UserBO;
+import lazyfood.demo.models.DTO.UserDTO;
 import lazyfood.demo.models.Entity.User;
+import lazyfood.demo.utils.IdGenerator;
 import lazyfood.demo.utils.general;
 
 @WebServlet(urlPatterns = { "/register" })
@@ -35,24 +37,24 @@ public class UserServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String username = request.getParameter("usernameS");
-        String userid = "ctm" + general.generateId("ctm", username);
+        String userid = "ctm" + IdGenerator.generateId("ctm", username);
         String password = request.getParameter("passwordS");
         String role = "customer";
         String fullname = request.getParameter("name");
         String phonenumber = request.getParameter("phone");
         String address = request.getParameter("addr");
 
-        User user = new User();
-        user.setUserId(userid);
-        user.setUsername(username);
-        user.setPassword(password);
-        user.setRole(role);
-        user.setFullname(fullname);
-        user.setPhoneNumber(phonenumber);
-        user.setAddress(address);
+        UserDTO userDTO = new UserDTO();
+        userDTO.UserId = userid;
+        userDTO.UserName = username;
+        userDTO.Password = password;
+        userDTO.Role = role;
+        userDTO.FullName = fullname;
+        userDTO.PhoneNumber = phonenumber;
+        userDTO.Address = address;
 
         try {
-            userBO.addUser(user);
+            userBO.addUser(userDTO);
         } catch (SQLIntegrityConstraintViolationException e) {
             request.setAttribute("error", "Username already exists");
             try {

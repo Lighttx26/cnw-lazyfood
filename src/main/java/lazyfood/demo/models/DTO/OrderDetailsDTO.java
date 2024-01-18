@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderDetailsDTO {
-    public String OrderId;
     public OrderDTO _Order;
     public List<ProductInOrderDTO> Products;
     public double TotalPrice;

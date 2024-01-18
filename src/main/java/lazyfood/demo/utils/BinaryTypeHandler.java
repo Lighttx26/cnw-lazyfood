@@ -22,6 +22,10 @@ public class BinaryTypeHandler {
         }
     }
 
+    public static String InputStreamToBase64(InputStream inputStream) {
+        return ByteArrayToBase64(InputStreamToByteArray(inputStream));
+    }
+
     public static String ByteArrayToBase64(byte[] Image) {
         return java.util.Base64.getEncoder().encodeToString(Image);
     }
