@@ -1,16 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="lazyfood.demo.models.Entity.Order" %>
-<%@ page import="lazyfood.demo.models.Entity.ProductInOrder" %>
-<%@ page import="lazyfood.demo.models.Entity.Product" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page import="java.util.List" %>
+<%@ page import="lazyfood.demo.models.DTO.OrderDetailsDTO" %>
+<%@ page import="lazyfood.demo.models.DTO.ProductInOrderDTO" %>
 
-<% Order order = (Order) request.getAttribute("order");
+<% OrderDetailsDTO orderDetails = (OrderDetailsDTO) request.getAttribute("order");
 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-String formattedDateTime = order.getTime().format(formatter);
-String isdelivered = null;
-    if (order.isDelivered()) isdelivered = "Delivered";
-    else isdelivered = "Delivering";
+String formattedDateTime = orderDetails._Order.OrderDatetime.format(formatter);
+String is_delivered = null;
+    if (orderDetails._Order.IsDelivered) is_delivered = "Delivered";
+    else is_delivered = "Delivering";
 %>
 <form>
     <div class="modal-header">
@@ -21,15 +20,15 @@ String isdelivered = null;
     <div class="modal-body">
         <div class="form-group">
             <label>ID</label>
-            <input type="text" class="form-control" name="orderId" value="<%= order.getOrderId()%>" readonly>
+            <input type="text" class="form-control" name="orderId" value="<%= orderDetails._Order.OrderId%>" readonly>
         </div>
         <div class="form-group">
             <label>Address</label>
-            <input type="text" class="form-control" name="address" value="<%= order.getAddress()%>" readonly>
+            <input type="text" class="form-control" name="address" value="<%= orderDetails._Order.Address%>" readonly>
         </div>
         <div class="form-group">
             <label>Phone</label>
-            <input type="text" class="form-control" name="phone" value="<%= order.getPhoneNumber()%>" readonly>
+            <input type="text" class="form-control" name="phone" value="<%= orderDetails._Order.PhoneNumber%>" readonly>
         </div>
         <div class="form-group">
             <label>Time</label>
@@ -37,7 +36,7 @@ String isdelivered = null;
         </div>
         <div class="form-group">
             <label>Status</label>
-            <input type="text" class="form-control" name="status" value="<%= isdelivered%>" readonly>
+            <input type="text" class="form-control" name="status" value="<%= is_delivered%>" readonly>
         </div>
 
         <div class="form-group">
@@ -52,17 +51,14 @@ String isdelivered = null;
                     </tr>
                 </thead>
                 <tbody id="productBox">
-                <% List<ProductInOrder> products = order.getProducts();
-                double total = 0;
-                    for (ProductInOrder product : products) {
-                        Product p = product.getProduct();
-                        total += p.getPrice() * product.getQuantity();
+                <% List<ProductInOrderDTO> products = orderDetails.Products;
+                    for (ProductInOrderDTO product : products) {
                         %>
                     <tr>
-                        <td><%= p.getProductId()%></td>
-                        <td><%= p.getProductName()%></td>
-                        <td><%= product.getQuantity()%></td>
-                        <td>$<%= String.format("%.2f",p.getPrice() * product.getQuantity())%></td>
+                        <td><%= product.ProductId%></td>
+                        <td><%= product.ProductName%></td>
+                        <td><%= product.Quantity%></td>
+                        <td>$<%= String.format("%.2f",product.Price * product.Quantity)%></td>
                     </tr>
                     <%
                     }
@@ -71,7 +67,7 @@ String isdelivered = null;
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
-                    <td><b>$<%= String.format("%.2f",total) %></b></td>
+                    <td><b>$<%= String.format("%.2f",orderDetails.TotalPrice) %></b></td>
                 </tr>
                 </tbody>
             </table>

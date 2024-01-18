@@ -18,17 +18,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lazyfood.demo.models.BO.OrderBO;
-import lazyfood.demo.models.BO.ProductBO;
 import lazyfood.demo.models.BO.UserBO;
 import lazyfood.demo.models.DTO.OrderDTO;
 import lazyfood.demo.models.DTO.OrderDetailsDTO;
 import lazyfood.demo.models.DTO.ProductInOrderDTO;
 import lazyfood.demo.models.DTO.UserDTO;
-import lazyfood.demo.models.Entity.Order;
-import lazyfood.demo.models.Entity.ProductInOrder;
-import lazyfood.demo.models.Entity.User;
 import lazyfood.demo.utils.IdGenerator;
-import lazyfood.demo.utils.general;
 
 @WebServlet(urlPatterns = {
         "/Order",

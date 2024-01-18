@@ -5,7 +5,6 @@ import java.sql.SQLException;
 
 import lazyfood.demo.models.BO.UserBO;
 import lazyfood.demo.models.DTO.UserDTO;
-import lazyfood.demo.models.Entity.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

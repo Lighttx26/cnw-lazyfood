@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="lazyfood.demo.models.Entity.Order" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="com.google.gson.Gson" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
+<%@ page import="lazyfood.demo.models.DTO.OrderDTO" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -231,24 +230,24 @@
                         </thead>
                         <tbody id="orderBox">
                         <%
-                            ArrayList<Order> orders = (ArrayList<Order>) request.getAttribute("orders");
+                            ArrayList<OrderDTO> orders = (ArrayList<OrderDTO>) request.getAttribute("orders");
                             for (int i = 0; i < orders.size(); i++) {
-                                String isdelivered = null;
+                                String is_delivered = null;
                                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-                                String formattedDateTime = orders.get(i).getTime().format(formatter);
-                                if (orders.get(i).isDelivered()) {
-                                    isdelivered = "Delivered";
+                                String formattedDateTime = orders.get(i).OrderDatetime.format(formatter);
+                                if (orders.get(i).IsDelivered) {
+                                    is_delivered = "Delivered";
                                 } else {
-                                    isdelivered = "Delivering";
+                                    is_delivered = "Delivering";
                                 }
                             %>
                             <tr>
-                                <td> <%= orders.get(i).getOrderId() %> </td>
-                                <td> <%= orders.get(i).getAddress() %> </td>
-                                <td> <%= orders.get(i).getPhoneNumber() %> </td>
+                                <td> <%= orders.get(i).OrderId %> </td>
+                                <td> <%= orders.get(i).Address %> </td>
+                                <td> <%= orders.get(i).PhoneNumber %> </td>
                                 <td> <%= formattedDateTime %> </td>
-                                <td <% if (isdelivered.equals("Delivered"))  out.print("style=\"color:green\""); %> > <%= isdelivered %> </td>
-                                <td><a href="#viewDetailModal" class="detail" data-toggle="modal" data-product-id=<%=orders.get(i).getOrderId()%> ><i
+                                <td <% if (is_delivered.equals("Delivered"))  out.print("style=\"color:green\""); %> > <%= is_delivered %> </td>
+                                <td><a href="#viewDetailModal" class="detail" data-toggle="modal" data-product-id=<%=orders.get(i).OrderId%> ><i
                                 class="material-icons" data-toggle="tooltip" title="Detail ">&#xe8f4;</i></a></td>
                             </tr>
                         <% } %>

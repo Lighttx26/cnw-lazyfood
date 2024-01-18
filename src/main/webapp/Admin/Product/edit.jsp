@@ -1,20 +1,20 @@
+<%@ page import="lazyfood.demo.models.DTO.ProductDTO" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="lazyfood.demo.models.Entity.Product" %>
 
-<% Product product = (Product) request.getAttribute("product"); %>
+<% ProductDTO product = (ProductDTO) request.getAttribute("product"); %>
 <form action="./Product/update" method="post" enctype="multipart/form-data">
     <div class="modal-header">
-        <h4 class="modal-title">Edit Product (<%= product.getProductId()%>)</h4>
+        <h4 class="modal-title">Edit Product (<%= product.ProductId%>)</h4>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
     </div>
     <div class="modal-body">
         <div class="form-group">
             <label>Product ID</label>
-            <input type="text" value="<%= product.getProductId()%>" readonly class="form-control" name="ProductIdE" required>
+            <input type="text" value="<%= product.ProductId%>" readonly class="form-control" name="ProductIdE" required>
         </div>
         <div class="form-group">
             <label>Product Name</label>
-            <input type="text" value="<%= product.getProductName()%>" class="form-control" name="ProductNameE" required>
+            <input type="text" value="<%= product.ProductName%>" class="form-control" name="ProductNameE" required>
         </div>
         <div class="form-group"
              style="display:  flex ; align-items: center; justify-content: space-between;">
@@ -26,7 +26,7 @@
         </div>
         <div class="form-group">
             <label>Price</label>
-            <input type="number" step="0.01" value="<%= product.getPrice()%>" class="form-control" name="PriceE" required>
+            <input type="number" step="0.01" value="<%= product.Price%>" class="form-control" name="PriceE" required>
         </div>
 
         <div class="form-group">
@@ -43,5 +43,5 @@
 </form>
 
 <script>
-    document.querySelector('select[name="CategoryIdE"]').value = "<%= product.getCategory().getCategoryId()%>";
+    document.querySelector('select[name="CategoryIdE"]').value = "<%= product.CategoryId%>";
 </script>

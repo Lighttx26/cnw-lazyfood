@@ -1,7 +1,6 @@
 package lazyfood.demo.controllers;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.servlet.annotation.WebServlet;
@@ -10,7 +9,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lazyfood.demo.models.BO.CategoryBO;
 import lazyfood.demo.models.DTO.CategoryDTO;
-import lazyfood.demo.models.Entity.Category;
 
 @WebServlet(urlPatterns = {
         "/Category",

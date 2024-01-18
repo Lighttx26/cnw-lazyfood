@@ -12,9 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import lazyfood.demo.models.BO.UserBO;
 import lazyfood.demo.models.DTO.UserDTO;
-import lazyfood.demo.models.Entity.User;
 import lazyfood.demo.utils.IdGenerator;
-import lazyfood.demo.utils.general;
 
 @WebServlet(urlPatterns = { "/register" })
 public class UserServlet extends HttpServlet {

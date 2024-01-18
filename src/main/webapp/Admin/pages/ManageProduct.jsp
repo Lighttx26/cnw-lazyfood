@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="lazyfood.demo.models.Entity.Product" %>
 <%@ page import="com.google.gson.Gson" %>
 <%@ page import="java.util.List" %>
+<%@ page import="lazyfood.demo.models.DTO.ProductDTO" %>
 <style>
                     .shadow-xl {
                         box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
@@ -239,33 +239,33 @@
                             </thead>
                             <tbody id="productBox">
                                 <%
-                                        List<Product> products = (List<Product>) request.getAttribute("products");
+                                        List<ProductDTO> products = (List<ProductDTO>) request.getAttribute("products");
                                         Gson gson = new Gson();
                                         String jsonProducts = gson.toJson(products);
                                         for (int i = 0; i < products.size(); i++) { %>
                                             <tr>
                                                 <td style="width: 100px"><img
-                                                        src="data:image/jpeg;base64,<%=products.get(i).getBase64Image()%>"
+                                                        src="data:image/jpeg;base64,<%=products.get(i).Image%>"
                                                         width="80%" /></td>
                                                 <td>
-                                                    <%= products.get(i).getProductId()%>
+                                                    <%= products.get(i).ProductId%>
                                                 </td>
                                                 <td>
-                                                    <%= products.get(i).getProductName()%>
+                                                    <%= products.get(i).ProductName%>
                                                 </td>
                                                 <td>
-                                                    <%= products.get(i).getCategory().getCategoryName()%>
+                                                    <%= products.get(i).CategoryName%>
                                                 </td>
                                                 <td>
-                                                    $<%= String.format("%.2f", products.get(i).getPrice()) %>
+                                                    $<%= String.format("%.2f", products.get(i).Price) %>
                                                 </td>
                                                 <td>
                                                     <a href="#editProductModal" class="edit" data-toggle="modal"
-                                                        data-product-id=<%=products.get(i).getProductId()%> ><i
+                                                        data-product-id=<%=products.get(i).ProductId%> ><i
                                                             class="material-icons" data-toggle="tooltip"
                                                             title="Edit">&#xE254;</i></a>
                                                     <a href="#deleteProductModal" class="delete" data-toggle="modal"
-                                                        data-product-id=<%=products.get(i).getProductId()%> ><i
+                                                        data-product-id=<%=products.get(i).ProductId%> ><i
                                                             class="material-icons" data-toggle="tooltip"
                                                             title="Delete">&#xE872;</i></a>
                                                 </td>
